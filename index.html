@@ -262,12 +262,78 @@
       phone: "(415) 883-1428",
       website: "https://ewastecollective.org/",
       status: "Open"
+    },
+    {
+      id: 7,
+      name: "MacBlowouts",
+      lat: 37.2467,
+      lng: -121.8130,
+      address: "6104 Camino Verde Dr Suite 2, San Jose, CA 95119",
+      inventory: "Refurbished Macs, Apple products & accessories",
+      phone: "(408) 622-0005",
+      website: "https://macblowouts.com/",
+      status: "Open"
+    },
+    {
+      id: 8,
+      name: "DV Warehouse",
+      lat: 34.0984,
+      lng: -118.3279,
+      address: "1515 Wilcox Ave, Los Angeles, CA 90028",
+      inventory: "Used cameras, A/V gear, laptops & electronics",
+      phone: "(323) 463-5005",
+      website: "https://www.dvwarehouse.com/",
+      status: "Open"
+    },
+    {
+      id: 9,
+      name: "MacPro LA",
+      lat: 34.1044,
+      lng: -118.3344,
+      address: "1947 N Cahuenga Blvd Unit 104, Los Angeles, CA 90068",
+      inventory: "Refurbished Macs, MacBook repairs & upgrades",
+      phone: "(323) 378-5603",
+      website: "https://macpro-la.com/",
+      status: "Open"
+    },
+    {
+      id: 10,
+      name: "DC Computers",
+      lat: 32.7524,
+      lng: -117.1648,
+      address: "1070 University Ave J101, San Diego, CA 92103",
+      inventory: "Refurbished desktops, laptops, components & parts",
+      phone: "(619) 255-4333",
+      website: "https://dccomputerwarehouse.com/",
+      status: "Open"
+    },
+    {
+      id: 11,
+      name: "Circular Systems",
+      lat: 38.5673,
+      lng: -121.4760,
+      address: "1930 28th St, Sacramento, CA 95816",
+      inventory: "Sustainable refurbished computers & electronics",
+      phone: "(916) 455-6888",
+      website: "https://www.circularcomputers.com/",
+      status: "Open"
+    },
+    {
+      id: 12,
+      name: "Micro Center",
+      lat: 37.3559,
+      lng: -121.9856,
+      address: "5201 Stevens Creek Blvd, Santa Clara, CA 95051",
+      inventory: "New & open-box CPUs, GPUs, RAM, laptops & more",
+      phone: null,
+      website: "https://www.microcenter.com/",
+      status: "Open"
     }
   ];
 
-  // Map setup
-  const DEFAULT_CENTER = [37.82, -122.38];
-  const map = L.map('map', { zoomControl: false }).setView(DEFAULT_CENTER, 10);
+  // Map setup — default zoomed out to show all CA locations
+  const DEFAULT_CENTER = [36.90, -120.10];
+  const map = L.map('map', { zoomControl: false }).setView(DEFAULT_CENTER, 6);
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
