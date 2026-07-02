@@ -128,6 +128,82 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   ::selection { background: rgba(125,255,255,0.25); color: #fff; }
+
+  /* ── Glitch title ── */
+  .glitch { position: relative; }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; inset: 0;
+    font-family: inherit; font-weight: inherit; font-size: inherit;
+    letter-spacing: inherit; line-height: inherit; white-space: nowrap;
+    pointer-events: none;
+  }
+  .glitch::before { color: #f653f8; animation: glitch-slice-a 9s -0.5s infinite; }
+  .glitch::after  { color: #7dffff; animation: glitch-slice-b 9s -0.5s infinite; }
+  .glitch { animation: glitch-shake 9s -0.5s infinite; }
+
+  @keyframes glitch-shake {
+    0%,4%,88%,100% { transform: none; }
+    1% { transform: translateX(-4px) skewX(-3deg); }
+    2% { transform: translateX(4px) skewX(1deg); }
+    3% { transform: translateX(-2px); }
+    89% { transform: translateX(-3px) skewX(-2deg); }
+    90% { transform: translateX(3px); }
+    91% { transform: none; }
+  }
+  @keyframes glitch-slice-a {
+    0%,86%,100% { opacity:0; clip-path:none; transform:none; }
+    87% { opacity:1; clip-path:polygon(0 5%,100% 5%,100% 32%,0 32%); transform:translateX(-6px); }
+    88% { clip-path:polygon(0 55%,100% 55%,100% 78%,0 78%); transform:translateX(5px); }
+    89% { opacity:0; }
+    92% { opacity:.7; clip-path:polygon(0 18%,100% 18%,100% 44%,0 44%); transform:translateX(-3px); }
+    94% { opacity:0; }
+  }
+  @keyframes glitch-slice-b {
+    0%,87%,100% { opacity:0; clip-path:none; transform:none; }
+    88% { opacity:1; clip-path:polygon(0 38%,100% 38%,100% 62%,0 62%); transform:translateX(6px); }
+    89% { clip-path:polygon(0 68%,100% 68%,100% 90%,0 90%); transform:translateX(-5px); }
+    90% { opacity:0; }
+    93% { opacity:.6; clip-path:polygon(0 8%,100% 8%,100% 33%,0 33%); transform:translateX(4px); }
+    95% { opacity:0; }
+  }
+
+  /* ── Blinking cursor ── */
+  .blink-cursor { animation: blink-cur 1s step-end infinite; color: #fefd03; }
+  @keyframes blink-cur { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── Scanning progress bar ── */
+  #scanProgress { transition: width 1.4s cubic-bezier(.4,0,.2,1); box-shadow: 0 0 8px rgba(125,255,255,0.7); }
+
+  /* ── Stats bar ── */
+  #statsBar { font-size: 10px; letter-spacing: .04em; }
+
+  /* ── HUD popup — sharp corners, data-dense ── */
+  .leaflet-popup-content-wrapper {
+    background: #000d1f !important; border-radius: 0 !important; padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(125,255,255,0.5) !important;
+    box-shadow: 0 0 0 1px rgba(125,255,255,0.15), 0 0 20px rgba(125,255,255,0.25), 0 8px 32px rgba(0,0,0,0.8) !important;
+  }
+  .leaflet-popup-tip-container { display: none !important; }
+  .leaflet-popup-close-button {
+    color: #fefd03 !important; z-index: 10;
+    font-size: 18px !important; padding: 5px 7px 0 0 !important;
+    text-shadow: 0 0 6px rgba(254,253,3,0.8) !important;
+  }
+  .leaflet-popup-close-button:hover { color: #f653f8 !important; }
+  .leaflet-popup-content { margin: 0 !important; width: 285px !important; }
+
+  /* HUD corner brackets */
+  .hud-popup { position: relative; }
+  .hud-corner { position: absolute; width: 10px; height: 10px; }
+  .hud-corner.tl { top:-1px; left:-1px; border-top:2px solid #fefd03; border-left:2px solid #fefd03; }
+  .hud-corner.tr { top:-1px; right:-1px; border-top:2px solid #fefd03; border-right:2px solid #fefd03; }
+  .hud-corner.bl { bottom:-1px; left:-1px; border-bottom:2px solid #7dffff; border-left:2px solid #7dffff; }
+  .hud-corner.br { bottom:-1px; right:-1px; border-bottom:2px solid #7dffff; border-right:2px solid #7dffff; }
+
+  /* Result chip sharp */
+  #resultChip { border-radius: 0 !important; }
 </style>
 </head>
 
@@ -139,11 +215,12 @@
   <!-- Header -->
   <header class="flex-none grid-fade bg-void-700 text-white px-4 py-3 border-b border-accent-blue/30 z-[1000] flex items-center justify-between">
     <div>
-      <h1 class="font-display text-xl sm:text-2xl font-black tracking-wide flex items-center gap-2 text-accent-yellow glow-yellow">
+      <h1 class="glitch font-display text-xl sm:text-2xl font-black tracking-wide flex items-center gap-2 text-accent-yellow glow-yellow"
+          data-text="REFURB RADAR">
         <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent-magenta shadow-[0_0_8px_3px_rgba(246,83,248,0.8)] animate-pulse"></span>
         REFURB RADAR
       </h1>
-      <p class="text-accent-blue text-xs sm:text-sm mt-0.5 font-mono">&gt; Ghost the big box stores. Find local refurb computers and components_</p>
+      <p class="text-accent-blue text-xs sm:text-sm mt-0.5 font-mono">&gt; <span id="typed-text"></span><span class="blink-cursor">_</span></p>
     </div>
     <button id="locateBtn" title="Find my location"
       class="flex-none bg-void-800 hover:bg-void-600 border border-accent-cyan/50 text-accent-cyan transition rounded-full p-3 box-glow-cyan">
@@ -169,6 +246,16 @@
         </svg>
       </button>
     </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div id="statsBar" class="flex-none bg-void-950 px-4 py-1.5 border-b border-accent-blue/10 font-mono text-gray-600 flex items-center gap-2 overflow-x-auto no-scrollbar whitespace-nowrap">
+    <span class="text-accent-magenta">//</span>
+    <span><span id="statNodes" class="text-accent-cyan">--</span> NODES ACTIVE</span>
+    <span class="text-gray-700">—</span>
+    <span><span id="statUnits" class="text-accent-cyan">--</span> UNITS INDEXED</span>
+    <span class="text-gray-700">—</span>
+    <span>LAST SCAN: <span id="statTime" class="text-accent-yellow">INITIALIZING...</span></span>
   </div>
 
   <!-- Map + bottom sheet -->
@@ -471,39 +558,60 @@
   }
 
   function popupHtml(center) {
-    const statusBadge = center.status === 'Open'
-      ? `<span style="display:inline-block;background:rgba(125,255,255,0.12);color:#7dffff;border:1px solid rgba(125,255,255,0.4);font-size:10px;font-weight:700;letter-spacing:.1em;padding:2px 8px;border-radius:999px;">● OPEN</span>`
-      : `<span style="display:inline-block;background:rgba(246,83,248,0.12);color:#f653f8;border:1px solid rgba(246,83,248,0.4);font-size:10px;font-weight:700;letter-spacing:.1em;padding:2px 8px;border-radius:999px;">● CLOSED</span>`;
-
+    const isOpen   = center.status === 'Open';
+    const sysColor = isOpen ? '#7dffff' : '#f653f8';
+    const sysLabel = isOpen ? '● SYS:ONLINE' : '● SYS:OFFLINE';
+    const nodeId   = String(center.id).padStart(3, '0');
+    const latStr   = `${Math.abs(center.lat).toFixed(4)}° ${center.lat >= 0 ? 'N' : 'S'}`;
+    const lngStr   = `${Math.abs(center.lng).toFixed(4)}° ${center.lng >= 0 ? 'E' : 'W'}`;
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(center.address)}`;
 
-    const phoneHtml = center.phone
-      ? `<a href="tel:${center.phone.replace(/[^\d+]/g, '')}" style="display:block;color:#7dffff;text-decoration:none;" onmouseover="this.style.color='#fefd03'" onmouseout="this.style.color='#7dffff'">☎ ${center.phone}</a>`
+    const phoneRow = center.phone
+      ? `<tr><td style="color:#1585cf;padding-right:8px;white-space:nowrap;vertical-align:top;">COM</td>
+           <td><a href="tel:${center.phone.replace(/[^\d+]/g, '')}" style="color:#7dffff;text-decoration:none;" onmouseover="this.style.color='#fefd03'" onmouseout="this.style.color='#7dffff'">${center.phone}</a></td></tr>`
       : '';
 
     return `
-      <div style="font-family:'JetBrains Mono',monospace;">
-        <div style="background:#00214e;border-bottom:1px solid rgba(125,255,255,0.25);padding:12px 16px;">
-          <h3 style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;color:#fefd03;text-shadow:0 0 6px rgba(254,253,3,0.8),0 0 16px rgba(254,253,3,0.35);margin:0 24px 6px 0;line-height:1.3;">${center.name}</h3>
-          ${statusBadge}
+      <div class="hud-popup" style="font-family:'JetBrains Mono',monospace;position:relative;">
+        <div class="hud-corner tl"></div>
+        <div class="hud-corner tr"></div>
+        <div class="hud-corner bl"></div>
+        <div class="hud-corner br"></div>
+
+        <!-- Header -->
+        <div style="background:#00214e;border-bottom:1px solid rgba(125,255,255,0.2);padding:10px 14px 9px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:9px;color:#4b5563;letter-spacing:.1em;">NODE_ID: ${nodeId}</span>
+            <span style="font-size:9px;font-weight:700;letter-spacing:.1em;color:${sysColor};text-shadow:0 0 6px ${sysColor}80;">${sysLabel}</span>
+          </div>
+          <h3 style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;color:#fefd03;text-shadow:0 0 6px rgba(254,253,3,0.8);margin:0;line-height:1.3;letter-spacing:.04em;">${center.name}</h3>
         </div>
-        <div style="padding:12px 16px;font-size:12px;color:#9ca3af;display:flex;flex-direction:column;gap:10px;">
-          <p style="margin:0;color:#6b7280;display:flex;gap:6px;">
-            <span style="color:#1585cf;">&gt;</span><span>${center.address}</span>
-          </p>
-          <div>
-            <p style="margin:0 0 3px;color:#f653f8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;">// About</p>
-            <p style="margin:0;color:#d1d5db;line-height:1.5;">${center.inventory}</p>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:4px;">
-            ${phoneHtml}
-            <a href="${center.website}" target="_blank" rel="noopener" style="color:#7dffff;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" onmouseover="this.style.color='#fefd03'" onmouseout="this.style.color='#7dffff'">⚡ visit_site</a>
-          </div>
+
+        <!-- Data grid -->
+        <div style="padding:10px 14px 4px;background:#000d1f;">
+          <table style="width:100%;border-collapse:collapse;font-size:11px;line-height:1.6;">
+            <tr><td style="color:#1585cf;padding-right:8px;white-space:nowrap;vertical-align:top;font-size:9px;letter-spacing:.06em;padding-top:1px;">ADDR</td>
+                <td style="color:#9ca3af;">${center.address}</td></tr>
+            <tr><td style="color:#1585cf;padding-right:8px;white-space:nowrap;vertical-align:top;font-size:9px;letter-spacing:.06em;padding-top:1px;">COORD</td>
+                <td style="color:#fefd03;font-size:10px;letter-spacing:.04em;">${latStr} &nbsp;${lngStr}</td></tr>
+            <tr><td style="color:#1585cf;padding-right:8px;white-space:nowrap;vertical-align:top;font-size:9px;letter-spacing:.06em;padding-top:1px;">TYPE</td>
+                <td style="color:#d1d5db;">${center.inventory}</td></tr>
+            ${phoneRow}
+            <tr><td style="color:#1585cf;padding-right:8px;white-space:nowrap;vertical-align:top;font-size:9px;letter-spacing:.06em;padding-top:1px;">NET</td>
+                <td><a href="${center.website}" target="_blank" rel="noopener" style="color:#7dffff;text-decoration:none;" onmouseover="this.style.color='#fefd03'" onmouseout="this.style.color='#7dffff'">visit_site ↗</a></td></tr>
+          </table>
+        </div>
+
+        <!-- Divider -->
+        <div style="margin:0 14px;border-top:1px solid rgba(125,255,255,0.12);"></div>
+
+        <!-- CTA -->
+        <div style="padding:10px 14px;">
           <a href="${directionsUrl}" target="_blank" rel="noopener"
-            style="display:block;text-align:center;background:#f653f8;color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:10px;border-radius:999px;text-decoration:none;box-shadow:0 0 12px rgba(246,83,248,0.65),0 0 28px rgba(246,83,248,0.3);"
+            style="display:block;text-align:center;background:#f653f8;color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:9px;border-radius:0;text-decoration:none;box-shadow:0 0 12px rgba(246,83,248,0.6),0 0 28px rgba(246,83,248,0.25);"
             onmouseover="this.style.boxShadow='0 0 18px rgba(246,83,248,0.9),0 0 36px rgba(246,83,248,0.5)'"
-            onmouseout="this.style.boxShadow='0 0 12px rgba(246,83,248,0.65),0 0 28px rgba(246,83,248,0.3)'">
-            Get Directions
+            onmouseout="this.style.boxShadow='0 0 12px rgba(246,83,248,0.6),0 0 28px rgba(246,83,248,0.25)'">
+            ▶ GET DIRECTIONS
           </a>
         </div>
       </div>
@@ -610,9 +718,64 @@
 
   searchInput.addEventListener('input', applyFilter);
   clearBtn.addEventListener('click', () => { searchInput.value = ''; applyFilter(); searchInput.focus(); });
-  renderList(recyclingCenters);
 
-  // Bottom sheet collapse toggle
+  // ── Stats bar ──
+  function updateStats(activeCount) {
+    const now = new Date();
+    const t = now.toTimeString().slice(0, 8);
+    document.getElementById('statNodes').textContent  = activeCount;
+    document.getElementById('statUnits').textContent  = recyclingCenters.length;
+    document.getElementById('statTime').textContent   = t;
+  }
+
+  // ── Scanning animation → then render list ──
+  function showScanning() {
+    listEl.innerHTML = `
+      <div style="padding:16px 4px;display:flex;flex-direction:column;gap:10px;">
+        <p style="text-align:center;font-size:11px;color:#7dffff;letter-spacing:.12em;animation:blink-cur 1s step-end infinite;">// SCANNING FOR NODES...</p>
+        <div style="background:#001228;height:3px;position:relative;overflow:hidden;">
+          <div id="scanProgress" style="position:absolute;top:0;left:0;height:100%;width:0%;background:linear-gradient(90deg,#7dffff,#f653f8);"></div>
+        </div>
+        <p style="text-align:center;font-size:9px;color:#374151;letter-spacing:.1em;">INITIALIZING DATABASE...</p>
+      </div>`;
+    setTimeout(() => {
+      const bar = document.getElementById('scanProgress');
+      if (bar) bar.style.width = '100%';
+    }, 60);
+  }
+
+  showScanning();
+  setTimeout(() => {
+    renderList(recyclingCenters);
+    updateStats(recyclingCenters.length);
+  }, 1600);
+
+  // Update stats on every filter change
+  const _origApply = applyFilter;
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    const count = q.length === 0 ? recyclingCenters.length
+      : recyclingCenters.filter(c =>
+          c.name.toLowerCase().includes(q) ||
+          c.address.toLowerCase().includes(q) ||
+          c.inventory.toLowerCase().includes(q)
+        ).length;
+    updateStats(count);
+  });
+
+  // ── Terminal typing animation ──
+  (function typeTagline() {
+    const el   = document.getElementById('typed-text');
+    const text = 'Ghost the big box stores. Find local refurb computers and components';
+    let i = 0;
+    function tick() {
+      el.textContent = text.slice(0, i);
+      if (i < text.length) { i++; setTimeout(tick, i === 1 ? 600 : 38); }
+    }
+    setTimeout(tick, 400);
+  })();
+
+  // ── Bottom sheet collapse toggle ──
   const sheetHandle = document.getElementById('sheetHandle');
   const sheet = sheetHandle.parentElement;
   let collapsed = false;
