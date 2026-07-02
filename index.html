@@ -328,12 +328,133 @@
       phone: null,
       website: "https://www.microcenter.com/",
       status: "Open"
+    },
+    {
+      id: 13,
+      name: "PC Liquidations",
+      lat: 30.3249,
+      lng: -81.6716,
+      address: "140 Stockton St, Jacksonville, FL 32204",
+      inventory: "Liquidated PCs, laptops, monitors & peripherals",
+      phone: "(904) 730-9290",
+      website: "https://www.pcliquidations.com/",
+      status: "Open"
+    },
+    {
+      id: 14,
+      name: "Refresh Computers",
+      lat: 28.7028,
+      lng: -81.3384,
+      address: "820 E State Rd 434 #100, Longwood, FL 32750",
+      inventory: "Refurbished desktops, laptops & tech support",
+      phone: "(407) 478-8200",
+      website: "https://refreshcomputers.net/",
+      status: "Open"
+    },
+    {
+      id: 15,
+      name: "Computer Overhauls",
+      lat: 40.7468,
+      lng: -73.9956,
+      address: "130 W 26th St, New York, NY 10001",
+      inventory: "Refurbished Macs, PCs, laptops & custom builds",
+      phone: "(212) 216-9711",
+      website: "https://computeroverhauls.com/",
+      status: "Open"
+    },
+    {
+      id: 16,
+      name: "Computers 4 People",
+      lat: 40.7440,
+      lng: -74.0324,
+      address: "321 Newark St #32, Hoboken, NJ 07030",
+      inventory: "Affordable refurbished computers for low-income families",
+      phone: "(201) 669-3062",
+      website: "https://www.computers4people.org/",
+      status: "Open"
+    },
+    {
+      id: 17,
+      name: "Free Geek",
+      lat: 45.5122,
+      lng: -122.6587,
+      address: "1700 SE Grand Ave, Portland, OR",
+      inventory: "Donated & refurbished computers, parts & tech education",
+      phone: "(503) 232-9350",
+      website: "https://www.freegeek.org/",
+      status: "Open"
+    },
+    {
+      id: 18,
+      name: "Oregon Recycles",
+      lat: 45.5456,
+      lng: -122.7123,
+      address: "2950 NW 29th Ave, Portland, OR 97210",
+      inventory: "E-waste recycling & refurbished electronics",
+      phone: "(503) 764-9963",
+      website: "https://oregonrecycles.com/",
+      status: "Open"
+    },
+    {
+      id: 19,
+      name: "Used Computers Seattle",
+      lat: 47.6872,
+      lng: -122.3452,
+      address: "7525 Aurora Ave N, Seattle, WA 98103",
+      inventory: "Used & refurbished desktops, laptops & parts",
+      phone: "(206) 784-4215",
+      website: "https://www.usedcomputerseattle.com/",
+      status: "Open"
+    },
+    {
+      id: 20,
+      name: "Discount PC",
+      lat: 30.4379,
+      lng: -97.7517,
+      address: "12303 Technology Blvd #930, Austin, TX 78727",
+      inventory: "Discounted refurbished PCs, laptops & components",
+      phone: "(512) 766-0903",
+      website: "https://discountpc.com/",
+      status: "Open"
+    },
+    {
+      id: 21,
+      name: "Paymore — Austin",
+      lat: 30.4012,
+      lng: -97.7490,
+      address: "11150 Research Blvd #208, Austin, TX 78759",
+      inventory: "Buy, sell & trade phones, laptops & electronics",
+      phone: "(737) 220-1794",
+      website: "https://greathillstx.paymore.com/",
+      status: "Open"
+    },
+    {
+      id: 22,
+      name: "Advance Technology Recycle",
+      lat: 40.8823,
+      lng: -88.6334,
+      address: "902 N Hazel St, Pontiac, IL 61764",
+      inventory: "Refurbished computers, electronics & e-waste recycling",
+      phone: "(815) 844-7779",
+      website: "https://www.atrstore.com/",
+      status: "Open"
+    },
+    {
+      id: 23,
+      name: "Comprenew",
+      lat: 42.9584,
+      lng: -85.6717,
+      address: "629 Ionia Ave SW, Grand Rapids, MI 49503",
+      inventory: "Refurbished computers & sustainable tech for all",
+      phone: "(616) 855-6262",
+      website: "https://www.shopcomprenew.org/",
+      status: "Open"
     }
   ];
 
-  // Map setup — default zoomed out to show all CA locations
-  const DEFAULT_CENTER = [36.90, -120.10];
-  const map = L.map('map', { zoomControl: false }).setView(DEFAULT_CENTER, 6);
+  // Map setup — default centered on continental US to show all locations
+  const DEFAULT_CENTER = [39.50, -98.35];
+  const map = L.map('map', { zoomControl: false }).setView(DEFAULT_CENTER, 4);
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
